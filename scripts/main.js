@@ -5,6 +5,44 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // -----------------------------------------
+    // Mobile Menu Toggle
+    // -----------------------------------------
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+    
+    if (mobileMenuToggle && mainNav) {
+        // Toggle menu when button is clicked
+        mobileMenuToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+            // Toggle aria-expanded for accessibility
+            const isExpanded = mainNav.classList.contains('active');
+            mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
+            
+            // Prevent scrolling when menu is open
+            document.body.classList.toggle('menu-open', isExpanded);
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (mainNav.classList.contains('active') && 
+                !mainNav.contains(event.target) && 
+                !mobileMenuToggle.contains(event.target)) {
+                mainNav.classList.remove('active');
+                mobileMenuToggle.setAttribute('aria-expanded', false);
+                document.body.classList.remove('menu-open');
+            }
+        });
+        
+        // Reset menu state on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && mainNav.classList.contains('active')) {
+                mainNav.classList.remove('active');
+                mobileMenuToggle.setAttribute('aria-expanded', false);
+                document.body.classList.remove('menu-open');
+            }
+        });
+    }
+    // -----------------------------------------
     // Login Button Redirect
     // -----------------------------------------
     const loginBtn = document.getElementById('loginBtn');
@@ -128,6 +166,26 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 
+    // Add animation delays for staggered effect
+    const animationStyle = document.createElement('style');
+    animationStyle.textContent = `
+        .feature-card:nth-child(2).animated,
+        .pricing-card:nth-child(2).animated {
+            animation-delay: 0.2s;
+        }
+        
+        .feature-card:nth-child(3).animated,
+        .pricing-card:nth-child(3).animated {
+            animation-delay: 0.3s;
+        }
+        
+        .feature-card:nth-child(4).animated,
+        .pricing-card:nth-child(4).animated {
+            animation-delay: 0.4s;
+        }
+    `;
+    document.head.appendChild(animationStyle);
+
     // -----------------------------------------
     // Contact Form Validation
     // -----------------------------------------
@@ -211,19 +269,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     }
 });
-        }
-        
-        .feature-card:nth-child(2).animated,
-        .pricing-card:nth-child(2).animated {
-            animation-delay: 0.2s;
-        }
-        
-        .feature-card:nth-child(3).animated,
-        .pricing-card:nth-child(3).animated {
-            animation-delay: 0.3s;
-        }
-        
-        .feature-card:nth-child(4).animated,
-        .pricing-card:nth-child(4).animated {
-            animation-delay: 
-
